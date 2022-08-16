@@ -1,0 +1,39 @@
+version: "2.6"
+services:
+
+    #PHP Service
+    php:
+        build: 
+            context: .
+            target: php
+            args:
+                - APP_ENV=${APP_ENV}
+        environment:
+            - APP_ENV=${APP_ENV}
+        ports:
+            - 8080:8080
+        working_dir: /sites
+        volumes:
+            - ./:/sites
+        depends_on:
+            - database
+
+
+    #Database server
+    database:
+        image: mysql:latest
+        ports:
+            - '3307:3307'
+        environment:
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_ROOT_HOST=${DB_PASSWORD}
+            - MYSQL_TCP_PORT=3307
+        volumes:
+            - adcash-data:/var/lib/mysql
+        
+
+volumes: 
+    adcash-data: ~
