@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Stock extends Model
+class Purchase extends Model
 {
     use HasFactory;
-
-    protected $guarded = [];
 
     public function getCreatedAtAttribute($date)
     {
@@ -22,5 +21,15 @@ class Stock extends Model
     {
         $date = Carbon::parse($date)->toDateTimeString();
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d/m/Y');
+    }
+
+    /**
+     * Get the stock that owns the Purchase
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stock(): BelongsTo
+    {
+        return $this->belongsTo(Stock::class);
     }
 }
