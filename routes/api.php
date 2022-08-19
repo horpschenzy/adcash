@@ -28,6 +28,7 @@ Route::prefix('v1')->group(
         );
         Route::middleware('auth')->group(
             function () {
+                Route::get('/me', [AuthController::class, 'me']);
                 Route::prefix('/client')->group(
                     function () {
                         Route::post('/', [ClientController::class, 'store']);

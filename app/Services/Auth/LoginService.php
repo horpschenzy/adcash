@@ -19,6 +19,12 @@ class LoginService
             return response()->json(['status' => false, 'message' => $e], 500);
         }
     }
+    
+    public function me()
+    {
+        return response()->json(['status' => true, 'data' => auth()->user()], 200);
+
+    }
 
    
     /**
@@ -54,10 +60,12 @@ class LoginService
     {
         return response()->json([
             'status' => true,
+            'message' => 'Login successfully',
             'data' => [
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60,
+                'user' => auth()->user()
             ]
         ]);
     }
