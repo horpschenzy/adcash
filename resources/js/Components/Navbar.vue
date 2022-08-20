@@ -14,7 +14,7 @@
                     Hello, <strong>{{name}}</strong>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" @click="logout()">Sign out</a></li>
                 </ul>
             </div>
         </div>
@@ -27,6 +27,18 @@ export default {
   data() {
     return {
       name: ''
+    }
+  },
+  methods: {
+    logout () {
+        this.$api.post('/api/logout').then(response => {
+            localStorage.removeItem('bearerToken');
+            localStorage.removeItem('userData');
+            this.$router.push("/login")
+
+        }).catch(error => {
+            location.reload();
+        });
     }
   },
   mounted() {

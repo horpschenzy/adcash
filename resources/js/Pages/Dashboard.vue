@@ -76,7 +76,7 @@
                                                         <i class="mdi mdi-dots-horizontal"></i>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="table-action">
-                                                        <a class="dropdown-item" href="#">View stocks</a>
+                                                        <router-link :to="'/client/'+ client.id + '/stocks'" class="dropdown-item">View stocks</router-link>
                                                     </div>
                                                 </div>
                                             </td>

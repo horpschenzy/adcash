@@ -61,7 +61,7 @@
                                         <thead>
                                           <tr>
                                             <th scope="col">Client</th>
-                                            <th scope="col">Stock</th>
+                                            <th scope="col">Company</th>
                                             <th scope="col">Volume</th>
                                             <th scope="col">Purchase Price</th>
                                             <th scope="col">Current Price</th>

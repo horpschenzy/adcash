@@ -37,6 +37,21 @@ const routes = [
       }
     },
     {
+      path: '/client/:id/stocks',
+      component: () => import('../Pages/ViewStock.vue'),
+      name: 'viewStock',
+      beforeEnter(to, from, next) {
+        let token = JSON.parse(localStorage.getItem('bearerToken'));
+        http.get('/api/v1/me').then(response => {
+          if(response.status >= 400 && response.status <= 499){
+            next('/login')
+          } else {
+            next();
+          }
+        });
+      }
+    },
+    {
       path: '/stock',
       component: () => import('../Pages/Stock.vue'),
       name: 'stock',

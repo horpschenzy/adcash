@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/{any?}', function() {
     return view('welcome');
 });
+Route::get('/client/{any?}/stocks', function() {
+    return view('welcome');
+});
