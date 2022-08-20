@@ -32,4 +32,14 @@ class Purchase extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+    
+    /**
+     * Get the client that owns the Purchase
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

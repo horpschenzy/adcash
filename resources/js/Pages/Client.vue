@@ -33,7 +33,7 @@
                                         <span class="input-group-text text-white bg-blue input-border" id="basic-addon1">@</span>
                                         <input type="text" class="form-control" placeholder="Username" v-model="form.username" aria-label="Username" aria-describedby="basic-addon1">
                                     </div>
-                                        <div class="badge-danger" v-for="(usernameError, index) in usernameErrors" :key="index">* {{usernameError}}</div>
+                                    <div class="badge-danger" v-for="(usernameError, index) in usernameErrors" :key="index">* {{usernameError}}</div>
                                     <button type="submit" class="btn btn-primary float-right">Add</button>
                                 </form>                                  
                             </div>
@@ -54,10 +54,10 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          <tr v-for="(client, index) in clients" :key="index">
+                                          <tr v-for="(client, index) in computedClients" :key="index">
                                             <th scope="row">{{client.username}}</th>
-                                            <td>€{{client.balance.toFixed(2)}}</td>
-                                            <td>johndoe@gmail.com</td>
+                                            <td>€{{client.balance}}</td>
+                                            <td v-html="client.gainOrLoss"></td>
                                             <td>
                                                 <div class="dropdown position-static actions d-inline-block">
                                                     <button class="btn btn-primary btn-md px-1 py-0 mt-1 rounded-circle" type="button"
@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         listClient () {
-            this.$api.get('/api/v1/client', this.form).then(response => {
+            this.$api.get('/api/v1/client').then(response => {
                 if (response.status == 200) {
                     this.clients = response.data.data;
                     return true;
@@ -114,7 +114,9 @@ export default {
             this.$api.post('/api/v1/client', this.form).then(response => {
                 if (response.status == 201) {
                     this.form.username = '';
+
                     this.usernameErrors = [];
+
                     this.listClient()
                     this.$toastr.success(response.data.message);
                     return true;
@@ -131,6 +133,48 @@ export default {
                     return false;
                 }
             })
+        },
+        getGainOrLossValue (purchases) {
+            if (purchases.length <= 0) {
+                return 0;
+            }
+            let profit = 0;
+            purchases.forEach((value, index) => {
+                let stockPrice = value.stock.price * value.volume;
+                let purchasePrice = value.price;
+                let gainOrLoss = stockPrice - purchasePrice;
+                profit += gainOrLoss;
+            })
+            return profit;
+        }
+    },
+    computed: {
+        computedClients () {
+            let clients =  this.clients;
+            let mainArray = [];
+            clients.forEach((value, index) => {
+                let gainOrLoss = this.getGainOrLossValue(value.purchases);
+
+                let result = '';
+                if (gainOrLoss > 0) {
+                    result = '<span class="text-success">+€' + gainOrLoss.toFixed(2) + '</span>';
+                } else if (gainOrLoss < 0) {
+                    result =  '<span class="text-danger">-€' + Math.abs(gainOrLoss).toFixed(2) + '</span>';
+                } else {
+                    result =  '€0.00';
+                }
+
+                let purchaseObject = {
+                    'id': value.id,
+                    'username': value.username,
+                    'balance': value.balance.toFixed(2),
+                    'profit': gainOrLoss,
+                    'gainOrLoss': result,
+                }
+                mainArray.push(purchaseObject);
+            });
+            mainArray.sort((a,b) => (a.profit > b.profit)  ? -1 : (a.profit < b.profit) ? 1 :0);
+            return mainArray;
         }
     },
     mounted() {

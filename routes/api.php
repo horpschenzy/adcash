@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MiscController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\PurchaseController;
@@ -29,6 +30,7 @@ Route::prefix('v1')->group(
         Route::middleware('auth')->group(
             function () {
                 Route::get('/me', [AuthController::class, 'me']);
+                Route::get('/dashboard/stats', [MiscController::class, 'index']);
                 Route::prefix('/client')->group(
                     function () {
                         Route::post('/', [ClientController::class, 'store']);
@@ -47,6 +49,7 @@ Route::prefix('v1')->group(
                 Route::prefix('/purchase')->group(
                     function () {
                         Route::post('/', [PurchaseController::class, 'store']);
+                        Route::get('/', [PurchaseController::class, 'index']);
                     }
                 );
             }

@@ -42,8 +42,6 @@ class PurchaseService
             $purchase->volume = $volume;
             $purchase->price = $price;
             if (!$purchase->save()) {
-                $client->balance = $newBalance;
-                $client->save();
                 return response()->json(
                     [
                         'status' => false,
@@ -52,6 +50,8 @@ class PurchaseService
                     400
                 );
             }
+            $client->balance = $newBalance;
+            $client->save();
             DB::commit();
             return response()->json(
                 [
@@ -72,5 +72,24 @@ class PurchaseService
                 500
             );
         }
+    }
+
+    /**
+     * List the available purchased stocks.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        $stocks = Purchase::with('stock')->with('client')->orderBy('price', 'DESC')->get();
+
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Fetched Successfully',
+                'data' => $stocks
+            ], 
+            200
+        );
     }
 }

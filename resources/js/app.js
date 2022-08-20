@@ -6,6 +6,11 @@ import VueRouter from 'vue-router';
 import http from './Libs/axios-config'
 Vue.prototype.$api = http;
 
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+Vue.use(VueSweetalert2);
+
 import router from './Router/index'
 import App from './App.vue'
 

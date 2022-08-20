@@ -19,4 +19,9 @@ class PurchaseController extends Controller
     {
         return $this->purchaseService->store($request);
     }
+    
+    public function index()
+    {
+        return $this->purchaseService->index();
+    }
 }
