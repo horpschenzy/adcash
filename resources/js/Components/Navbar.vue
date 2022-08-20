@@ -14,7 +14,7 @@
                     Hello, <strong>{{name}}</strong>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><router-link class="dropdown-item" @click="logout()">Sign out</router-link></li>
+                    <li><a class="dropdown-item" @click="logout()">Sign out</a></li>
                 </ul>
             </div>
         </div>
