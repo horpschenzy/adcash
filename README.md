@@ -45,6 +45,11 @@ If you can’t find any, run heroku buildpacks:add [‘missing build’] command
 To set the environment variables for your application you can do that using your terminal with the heroku config:set VAR_NAME=VAR_VALUE command or through your dashboard in the settings tab, click on Reveal config vars to see and set environment variables.
 
 
+## Testing using PHPUnit
+
+Run php artisan test
+
+
 
 
 
